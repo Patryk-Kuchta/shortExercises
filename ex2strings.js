@@ -34,7 +34,7 @@ function wrapInTableFormatting(strings) {
 	return '| ' + strings.join(' | ') + ' |\n'
 }
 
-function displayAsTable(headers, body, widthLimits=[]) {
+function displayAsTable(headers, body, widthLimits=[], padSettings=[]) {
 
 	for (let index in headers) {
 		if (!widthLimits[index]) {
@@ -88,5 +88,5 @@ for(let line of bodyText) {
 	bodyCells.push(cells)
 }
 
-writeToFile('result.txt', displayAsTable(headersText.split(','), bodyCells, [null, 29, 21]))
+writeToFile('result.txt', displayAsTable(headersText.split(','), bodyCells, [null, 29, 21], [false, true, false]))
 
