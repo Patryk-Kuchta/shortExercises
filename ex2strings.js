@@ -25,7 +25,8 @@ function expandOrTruncate(stringToFormat, desiredLength, padLeft=false) {
 		else
 			return stringToFormat + ' '.repeat(desiredLength - stringToFormat.length)
 	} else {
-		return stringToFormat.slice(0, desiredLength - 4) + ' ...'
+		truncationSymbol = ' ...'
+		return stringToFormat.slice(0, desiredLength - truncationSymbol.length) + truncationSymbol
 	}
 }
 
@@ -33,13 +34,14 @@ function wrapInTableFormatting(strings) {
 	return '| ' + strings.join(' | ') + ' |\n'
 }
 
-function displayAsTable(headers, body, widthLimits=[null, 29, 21], padSettings=[false, true, false]) {
+function displayAsTable(headers, body, widthLimits=[]) {
 
-	for (let index in widthLimits) {
+	for (let index in headers) {
 		if (!widthLimits[index]) {
 			let maxWidth = Math.max(...body.map((entry) => {return entry[index].length}));
 			widthLimits[index] = Math.max(maxWidth, headers[index].length);
 		}
+		padSettings[index] = !!padSettings[index]
 	}
 
 	let headersFixedLength = [];
@@ -86,5 +88,5 @@ for(let line of bodyText) {
 	bodyCells.push(cells)
 }
 
-writeToFile('result.txt', displayAsTable(headersText.split(','), bodyCells))
+writeToFile('result.txt', displayAsTable(headersText.split(','), bodyCells, [null, 29, 21]))
 
